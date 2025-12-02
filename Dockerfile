@@ -15,12 +15,12 @@ RUN apt-get clean && \
 # Install ca-certificates-java first to avoid OpenJDK dependency issues
 RUN apt-get install -y --no-install-recommends ca-certificates-java
 
-# Now install the rest
+# Now install the rest (using default-jdk which is OpenJDK 17 on Kali Rolling)
 RUN apt-get install -y --no-install-recommends \
         ca-certificates \
         curl \
         iproute2 \
-        openjdk-17-jdk \
+        default-jdk \
         expect \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
