@@ -6,19 +6,22 @@ ARG VERSION="v0.5.0"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN rm -rf /etc/apt/apt.conf.d/docker-clean && \
-    echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache && \
+# Fix for rolling repo sync issues: separate update and install
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     apt-get update --fix-missing && \
-    apt-get -y dist-upgrade && \
-    apt-get install -y --no-install-recommends \
+    apt-get -y dist-upgrade
+
+RUN apt-get install -y --no-install-recommends \
         ca-certificates \
         curl \
         iproute2 \
-        \
-        openjdk-17-jdk      \
-        expect              \
+        openjdk-17-jdk \
+        expect \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN update-java-alternatives -s java-1.17.0-openjdk-amd64 2>/dev/null || true
 
 WORKDIR /opt
 RUN mkdir -p /opt/cobaltstrike
