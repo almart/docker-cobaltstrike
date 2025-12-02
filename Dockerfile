@@ -6,12 +6,16 @@ ARG VERSION="v0.5.0"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Fix for rolling repo sync issues: separate update and install
+# Clean and update first
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get update --fix-missing && \
     apt-get -y dist-upgrade
 
+# Install ca-certificates-java first to avoid OpenJDK dependency issues
+RUN apt-get install -y --no-install-recommends ca-certificates-java
+
+# Now install the rest
 RUN apt-get install -y --no-install-recommends \
         ca-certificates \
         curl \
