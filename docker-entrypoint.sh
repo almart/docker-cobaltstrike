@@ -67,7 +67,7 @@ if [ -f "/opt/cobaltstrike/server/rest-server/csrestapi" ]; then
     echo "[+] Starting REST API..."
     
     # Start in background, but monitor it
-    ./csrestapi --pass "${COBALTSTRIKE_PASS}" &
+    ./csrestapi --host 0.0.0.0 --port 50443 --pass "${COBALTSTRIKE_PASS}" &
     REST_PID=$!
     
     # Quick check to see if it died immediately (e.g. Connection Refused)
