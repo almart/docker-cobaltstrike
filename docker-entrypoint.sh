@@ -59,7 +59,7 @@ while ! (echo > /dev/tcp/127.0.0.1/50050) >/dev/null 2>&1; do
 done
 
 echo "[+] Teamserver port is active. Waiting 15s for full initialization..."
-sleep 15
+sleep 60
 
 # === START 4.12 REST API  ===
 cd /opt/cobaltstrike/server/rest-server/
@@ -67,17 +67,8 @@ if [ -f "/opt/cobaltstrike/server/rest-server/csrestapi" ]; then
     echo "[+] Starting REST API..."
     
     # Start in background, but monitor it
-    ./csrestapi --host 0.0.0.0 --port 50443 --pass "${COBALTSTRIKE_PASS}" &
+    ./csrestapi  --host 127.0.0.1 --pass "${COBALTSTRIKE_PASS}" &
     REST_PID=$!
-    
-    # Quick check to see if it died immediately (e.g. Connection Refused)
-    sleep 5
-    if ! kill -0 "$REST_PID" 2>/dev/null; then
-        echo "[!] REST API failed to start (process died). Attempting one retry..."
-        sleep 5
-        ./csrestapi --pass "${COBALTSTRIKE_PASS}" &
-        REST_PID=$!
-    fi
 fi
 
 echo ""
