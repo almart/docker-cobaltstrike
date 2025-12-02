@@ -36,6 +36,7 @@ RUN chmod +x /opt/docker-entrypoint.sh
 WORKDIR /opt/cobaltstrike
 
 EXPOSE 50050
+EXPOSE 50443
 
 ENTRYPOINT ["/opt/docker-entrypoint.sh"]
 STOPSIGNAL SIGKILL
